@@ -84,7 +84,7 @@ if(NOT EXISTS "${SOURCE_DIR_2}/System.Native")
   )
 endif()
 ]===]
-if(NOT EXISTS "${SOURCE_DIR_2}/System.Native")
+if(NOT EXISTS "${SOURCE_DIR_2}/GkMa.exe")
   ExternalProject_Add(
     gk_ma
     CONFIGURE_COMMAND
@@ -95,13 +95,17 @@ if(NOT EXISTS "${SOURCE_DIR_2}/System.Native")
       COMMAND $(MAKE) -f MakefileCs BUILD_PATH="${SOURCE_DIR_2}" SRC=${SOURCE_DIR_2}/GkMa
       # BUILD_PATH="${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
       COMMAND $(MAKE) -f MakefileCpp BUILD_PATH="${SOURCE_DIR_2}" SRC=${SOURCE_DIR_2}/NativeHelper
-    INSTALL_COMMAND
-      COMMAND ${CMAKE_COMMAND} -E create_symlink /usr/lib/libmono-native.so ${SOURCE_DIR_2}/System.Native
-
-      COMMAND ${CMAKE_COMMAND} -E create_symlink ${SOURCE_DIR_2}/System.Native ${CMAKE_BINARY_DIR}/System.Native
-      # System.Native must live in the same directory as the execs that call mono (?)
   )
 endif()
+
+# System.Native EXACTLY, linking the libmono-native.so
+# is a shared object and MUST BE FOUND in the LD_LIBRARY_PATH if you need to run ANY mono-dependent code
+# here, we assume /usr/local/viper/lib/ is a LD_LIBRARY_PATH you have write access to
+execute_process(
+  COMMAND ${CMAKE_COMMAND} -E create_symlink
+  /usr/lib/libmono-native.so
+  /usr/local/viper/lib/System.Native
+  )
 
 if(NOT EXISTS "${SOURCE_DIR_1}/4br17.gtsp")
   # file(ARCHIVE_EXTRACT INPUT ${SOURCE_DIR_1}/InstancesBinary.zip DESTINATION ${SOURCE_DIR_1})
