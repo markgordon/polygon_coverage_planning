@@ -92,8 +92,9 @@ if(NOT EXISTS "${SOURCE_DIR_2}/System.Native")
       COMMAND cp ${PROJECT_SOURCE_DIR}/patches/MakefileCs ./MakefileCs
     SOURCE_DIR ${SOURCE_DIR_2}
     BUILD_COMMAND
-      COMMAND $(MAKE) -f MakefileCs BUILD_PATH="${CMAKE_LIBRARY_OUTPUT_DIRECTORY}" SRC=${SOURCE_DIR_2}/GkMa
-      COMMAND $(MAKE) -f MakefileCpp BUILD_PATH="${CMAKE_LIBRARY_OUTPUT_DIRECTORY}" SRC=${SOURCE_DIR_2}/NativeHelper
+      COMMAND $(MAKE) -f MakefileCs BUILD_PATH="${SOURCE_DIR_2}" SRC=${SOURCE_DIR_2}/GkMa
+      # BUILD_PATH="${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
+      COMMAND $(MAKE) -f MakefileCpp BUILD_PATH="${SOURCE_DIR_2}" SRC=${SOURCE_DIR_2}/NativeHelper
     INSTALL_COMMAND
       COMMAND ${CMAKE_COMMAND} -E create_symlink /usr/lib/libmono-native.so ${SOURCE_DIR_2}/System.Native
 
@@ -103,20 +104,30 @@ if(NOT EXISTS "${SOURCE_DIR_2}/System.Native")
 endif()
 
 if(NOT EXISTS "${SOURCE_DIR_1}/4br17.gtsp")
+  # file(ARCHIVE_EXTRACT INPUT ${SOURCE_DIR_1}/InstancesBinary.zip DESTINATION ${SOURCE_DIR_1})
+  message(STATUS "EXTRACTING: ${SOURCE_DIR_1}/InstancesBinary.zip")
+  execute_process(COMMAND "unzip" "${SOURCE_DIR_1}/InstancesBinary.zip" "-d" "${SOURCE_DIR_1}")
+  #[===[
   # Download GTSP test instances.
   include(ExternalProject)
   ExternalProject_Add(
     gtsp_instances
     SOURCE_DIR ${SOURCE_DIR_1}
-    URL http://www.cs.nott.ac.uk/~dxk/gtsplib/InstancesBinary.zip
-    URL https://polybox.ethz.ch/index.php/s/51iqurpOOQ5cVaJ/download
-    DOWNLOAD_NAME InstancesBinary.zip
-    URL_MD5 255831bd47de71df8419a54741f0a6be
+    # URL http://www.cs.nott.ac.uk/~dxk/gtsplib/InstancesBinary.zip
+    # URL https://polybox.ethz.ch/index.php/s/51iqurpOOQ5cVaJ/download
+    # DOWNLOAD_NAME InstancesBinary.zip
+    # URL_MD5 255831bd47de71df8419a54741f0a6be
     UPDATE_COMMAND ""
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
+    INSTALL_DIR ${PROJECT_SOURCE_DIR}
+    INSTALL_COMMAND
+      COMMAND ${CMAKE_COMMAND} 
     INSTALL_COMMAND ""
   )
+  ]===]
+else()
+  message(STATUS "Skipping extraction")
 endif()
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)

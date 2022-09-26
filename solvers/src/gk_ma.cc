@@ -32,10 +32,11 @@
 namespace polygon_coverage_planning {
 namespace gk_ma {
 
-const std::string kFile = "GkMa.exe";
 // const std::string kExecutablePath = "/home/cyan3/Dev/jim/drake/software/polygon_coverage_planning/solvers/build/lib/" + kFile;
 
-const std::string kExecutablePath = "/home/cyan3/Dev/jim/drake/software/polygon_coverage_planning/solvers/build/lib/" + kFile;
+// must match what is in the solver CMake line95 for now
+const std::string kFile = "GkMa.exe";
+const std::string kExecutablePath = "/home/cyan3/Dev/jim/drake/software/polygon_coverage_planning/solvers/source_dir_2/" + kFile;
 
 bool Task::mIsSquare() const {
   for (size_t i = 0; i < m.size(); ++i) {
