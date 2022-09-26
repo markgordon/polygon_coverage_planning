@@ -35,3 +35,5 @@
 .idea/
 
 **build/
+solvers/source_dir_1/*.gtsp
+solvers/source_dir_2/System.Native
