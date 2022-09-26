@@ -41,7 +41,8 @@ TEST(GkMa, LoadFromFile) {
     "4br17.gtsp",
     "11berlin52.gtsp",
     "40d198.gtsp",
-    "65rbg323.gtsp"};
+    "65rbg323.gtsp"
+  };
   for (const std::string& instance_name : instance_names) {
     std::string file = instances_path + instance_name;
     instance.setSolver(file, true);

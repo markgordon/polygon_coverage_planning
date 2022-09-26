@@ -29,14 +29,17 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 set(GKMA_INCLUDE_DIR ${CMAKE_BINARY_DIR}/gk_ma-prefix/src/gk_ma)
 
-set (SOURCE_DIR_1 "${CMAKE_SOURCE_DIR}/source_dir_1")
+# use PROJECT_SOURCE_DIR, not CMAKE_SOURCE_DIR
+# so source_dir_1/2 can live once inside thsi subproject's folder
+set (SOURCE_DIR_1 "${PROJECT_SOURCE_DIR}/source_dir_1")
 file(MAKE_DIRECTORY "${SOURCE_DIR_1}")
 message(STATUS "SOURCE_DIR_1: ${SOURCE_DIR_1}")
 
-set (SOURCE_DIR_2 "${CMAKE_SOURCE_DIR}/source_dir_2")
+set (SOURCE_DIR_2 "${PROJECT_SOURCE_DIR}/source_dir_2")
 file(MAKE_DIRECTORY "${SOURCE_DIR_2}")
 message(STATUS "SOURCE_DIR_2: ${SOURCE_DIR_2}")
 
+#[===[
 if(NOT EXISTS "${SOURCE_DIR_2}/System.Native")
   ExternalProject_Add(
     gk_ma
@@ -66,6 +69,24 @@ if(NOT EXISTS "${SOURCE_DIR_2}/System.Native")
       COMMAND patch GkMa/OurHeuristic/Types/Tour.cs ${CMAKE_CURRENT_SOURCE_DIR}/patches/Tour.patch
     UPDATE_COMMAND
       COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    CONFIGURE_COMMAND
+      COMMAND cp ${PROJECT_SOURCE_DIR}/patches/MakefileCpp ./MakefileCpp
+      COMMAND cp ${PROJECT_SOURCE_DIR}/patches/MakefileCs ./MakefileCs
+    SOURCE_DIR ${SOURCE_DIR_2}
+    BUILD_COMMAND
+      COMMAND $(MAKE) -f MakefileCs BUILD_PATH="${CMAKE_LIBRARY_OUTPUT_DIRECTORY}" SRC=${SOURCE_DIR_2}/GkMa
+      COMMAND $(MAKE) -f MakefileCpp BUILD_PATH="${CMAKE_LIBRARY_OUTPUT_DIRECTORY}" SRC=${SOURCE_DIR_2}/NativeHelper
+    INSTALL_COMMAND
+      COMMAND ${CMAKE_COMMAND} -E create_symlink /usr/lib/libmono-native.so ${SOURCE_DIR_2}/System.Native
+
+      COMMAND ${CMAKE_COMMAND} -E create_symlink ${SOURCE_DIR_2}/System.Native ${CMAKE_BINARY_DIR}/System.Native
+      # System.Native must live in the same directory as the execs that call mono (?)
+  )
+endif()
+]===]
+if(NOT EXISTS "${SOURCE_DIR_2}/System.Native")
+  ExternalProject_Add(
+    gk_ma
     CONFIGURE_COMMAND
       COMMAND cp ${PROJECT_SOURCE_DIR}/patches/MakefileCpp ./MakefileCpp
       COMMAND cp ${PROJECT_SOURCE_DIR}/patches/MakefileCs ./MakefileCs
