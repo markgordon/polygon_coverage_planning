@@ -30,6 +30,12 @@ include_directories(
     # ${catkin_INCLUDE_DIRS}
 )
 
+link_directories(
+  ../solvers/build/lib/
+  ../solvers/build/
+  ../geometry/build/
+)
+
 #############
 # LIBRARIES #
 #############
@@ -45,18 +51,37 @@ add_library(
 )
 target_link_libraries(
     ${PROJECT_NAME}
+    PUBLIC
     ${CGAL_LIBRARIES}
     ${CGAL_3RD_PARTY_LIBRARIES}
     # ${catkin_LIBRARIES}
+    polygon_coverage_solvers_shared # you need the shared library
+    polygon_coverage_geometry
 )
 
 #########
 # TESTS #
 #########
-# catkin_add_gtest(test_planners
-#   test/planners-test.cpp
-# )
-# target_link_libraries(test_planners ${PROJECT_NAME} ${catkin_LIBRARIES})
+include(GoogleTest)
+
+set(EXECUTABLES
+  planners-test
+  )
+# Creates and executable for each cpp file
+# Prepends with project name to avoid name collisions
+foreach(executable ${EXECUTABLES})
+  add_executable(${PROJECT_NAME}_${executable} test/${executable} )
+  target_link_libraries(
+    ${PROJECT_NAME}_${executable}
+    PUBLIC
+    ${PROJECT_NAME}
+    gtest
+    pthread)
+  gtest_add_tests(
+    TARGET ${PROJECT_NAME}_${executable}
+    SOURCES test/${executable}.cpp
+  )
+endforeach()
 
 # ##########
 # # EXPORT #

@@ -21,7 +21,7 @@
 
 #include <CGAL/Random.h>
 #include <gtest/gtest.h>
-#include <ros/console.h>
+// #include <ros/console.h>
 
 #include <polygon_coverage_geometry/cgal_comm.h>
 #include <polygon_coverage_geometry/test_comm.h>
@@ -55,7 +55,7 @@ void runPlanners(const std::vector<PolygonWithHoles>& polygons) {
     // Create planner settings.
     sweep_plan_graph::SweepPlanGraph::Settings settings;
     settings.polygon = p;
-    ROS_INFO_STREAM(p);
+    // ROS_INFO_STREAM(p);
     settings.cost_function =
         std::bind(&computeEuclideanPathCost, std::placeholders::_1);
     settings.sensor_model = std::make_shared<Frustum>(

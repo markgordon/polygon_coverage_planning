@@ -22,7 +22,7 @@
 #include <vector>
 
 #include <gtest/gtest.h>
-#include <ros/package.h>
+// #include <ros/package.h>
 
 #include "polygon_coverage_solvers/gk_ma.h"
 
@@ -35,15 +35,13 @@ TEST(GkMa, LoadFromFile) {
   GkMa& instance = GkMa::getInstance();
 
   // Package directory.
-  std::string instances_path = ros::package::getPath(kPackageName);
-  // Catkin directory.
-  instances_path = instances_path.substr(0, instances_path.find("/src/"));
-  // Instances directory.
-  instances_path +=
-      "/build/" + kPackageName + "/gtsp_instances-prefix/src/gtsp_instances/";
+  std::string instances_path = "/home/cyan3/Dev/jim/drake/software/polygon_coverage_planning/solvers/source_dir_1/";
 
-  std::vector<std::string> instance_names = {"4br17.gtsp", "11berlin52.gtsp",
-                                             "40d198.gtsp", "65rbg323.gtsp"};
+  std::vector<std::string> instance_names = {
+    "4br17.gtsp",
+    "11berlin52.gtsp",
+    "40d198.gtsp",
+    "65rbg323.gtsp"};
   for (const std::string& instance_name : instance_names) {
     std::string file = instances_path + instance_name;
     instance.setSolver(file, true);

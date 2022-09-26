@@ -33,12 +33,9 @@ namespace polygon_coverage_planning {
 namespace gk_ma {
 
 const std::string kFile = "GkMa.exe";
-const std::string kPackageName = "polygon_coverage_solvers";
-const std::string kPackagePath = "polygon_coverage_solvers";
-const std::string kCatkinPath =
-    kPackagePath.substr(0, kPackagePath.find("/src/"));
-const std::string kLibraryPath = kCatkinPath + "/devel/lib";
-const std::string kExecutablePath = kLibraryPath + "/" + kFile;
+// const std::string kExecutablePath = "/home/cyan3/Dev/jim/drake/software/polygon_coverage_planning/solvers/build/lib/" + kFile;
+
+const std::string kExecutablePath = "/home/cyan3/Dev/jim/drake/software/polygon_coverage_planning/solvers/build/lib/" + kFile;
 
 bool Task::mIsSquare() const {
   for (size_t i = 0; i < m.size(); ++i) {
@@ -77,6 +74,7 @@ GkMa::GkMa() {
   //                mono_image_get_filename(image));
   assert(solver_class_);
   solver_ = mono_object_new(domain_, solver_class_);  // Allocate memory.
+  printf("done\n");
 }
 
 GkMa::~GkMa() { mono_jit_cleanup(domain_); }
@@ -85,6 +83,8 @@ void GkMa::setSolver(const std::string& file, bool binary) {
   void* args[2];
   args[0] = mono_string_new(domain_, file.c_str());
   args[1] = &binary;
+
+  printf("file.c_str() %s\n", file.c_str());
 
   // Find constructor method.
   void* iter = NULL;

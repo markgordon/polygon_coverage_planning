@@ -20,7 +20,7 @@
 #ifndef POLYGON_COVERAGE_PLANNING_TEST_COMMON_H_
 #define POLYGON_COVERAGE_PLANNING_TEST_COMMON_H_
 
-#include <ros/assert.h>
+// #include <ros/assert.h>
 #include <cstdlib>
 
 #include <CGAL/Kernel/global_functions.h>
@@ -184,7 +184,7 @@ bool checkVerticesIdentical(const typename Kernel::Point_2& a,
 
 template <class Kernel>
 void correctVertices(std::vector<typename Kernel::Point_2>* vertices) {
-  ROS_ASSERT(vertices);
+  assert(vertices);
   // Delete identical adjacent vertices.
   typename std::vector<typename Kernel::Point_2>::iterator it =
       std::adjacent_find(vertices->begin(), vertices->end(),

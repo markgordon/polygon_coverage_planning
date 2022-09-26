@@ -20,6 +20,10 @@ include_directories(
   # ${catkin_INCLUDE_DIRS}
 )
 
+link_directories(
+  ../solvers/build/
+)
+
 #############
 # LIBRARIES #
 #############
@@ -40,42 +44,41 @@ add_library(${PROJECT_NAME}
 
 target_link_libraries(
   ${PROJECT_NAME}
+  PUBLIC
   ${CGAL_LIBRARIES}
   ${CGAL_3RD_PARTY_LIBRARIES}
+  # polygon_coverage_solvers
 )
 
 # #########
 # # TESTS #
 # #########
-# catkin_add_gtest(test_bcd
-#   test/bcd-test.cpp
-# )
-# target_link_libraries(test_bcd ${PROJECT_NAME} ${catkin_LIBRARIES})
+include(GoogleTest)
 
-# catkin_add_gtest(test_cgal_comm
-#   test/cgal_comm-test.cpp
-# )
-# target_link_libraries(test_cgal_comm ${PROJECT_NAME} ${catkin_LIBRARIES})
+set(EXECUTABLES
+  bcd-test
+  cgal_comm-test
+  offset-test
+  sweep-test
+  visibility_graph-test
+  visibility_polygon-test
+  )
+# Creates and executable for each cpp file
+# Prepends with project name to avoid name collisions
+foreach(executable ${EXECUTABLES})
+  add_executable(${PROJECT_NAME}_${executable} test/${executable} )
+  target_link_libraries(
+    ${PROJECT_NAME}_${executable}
+    PUBLIC
+    ${PROJECT_NAME}
+    gtest
+    pthread)
+  gtest_add_tests(
+    TARGET ${PROJECT_NAME}_${executable}
+    SOURCES test/${executable}.cpp
+  )
+endforeach()
 
-# catkin_add_gtest(test_offset
-#   test/offset-test.cpp
-# )
-# target_link_libraries(test_offset ${PROJECT_NAME} ${catkin_LIBRARIES})
-
-# catkin_add_gtest(test_sweep
-#   test/sweep-test.cpp
-# )
-# target_link_libraries(test_sweep ${PROJECT_NAME} ${catkin_LIBRARIES})
-
-# catkin_add_gtest(test_visibility_graph
-#   test/visibility_graph-test.cpp
-# )
-# target_link_libraries(test_visibility_graph ${PROJECT_NAME} ${catkin_LIBRARIES})
-
-# catkin_add_gtest(test_visibility_polygon
-#   test/visibility_polygon-test.cpp
-# )
-# target_link_libraries(test_visibility_polygon ${PROJECT_NAME} ${catkin_LIBRARIES})
 
 # ##########
 # # EXPORT #
