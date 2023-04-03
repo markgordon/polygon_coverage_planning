@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 2.8.3)
-
+cmake_minimum_required(VERSION 2.8.12)
+set(CGAL_DATA_DIR ".")
 project(polygon_coverage)
 # set(CMAKE_CXX_FLAGS "-std=c++11")
 SET(CMAKE_BUILD_TYPE Release) # Release, RelWithDebInfo, 2019-03-04 need Release for numeric stability!

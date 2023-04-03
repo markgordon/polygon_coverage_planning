@@ -17,10 +17,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <ros/ros.h>
-
 #include <polygon_coverage_planners/planners/polygon_stripmap_planner.h>
-#include "polygon_coverage_ros/coverage_planner.h"
+#include <polygon_coverage_ros/coverage_planner.h>
 
 // Standard C++ entry point
 int main(int argc, char** argv) {

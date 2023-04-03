@@ -43,7 +43,7 @@ void computeOffsetPolygon(const PolygonWithHoles& pwh, FT max_offset,
   // TODO(rikba): Check weak simplicity.
 
   // Try maximum offsetting.
-  std::vector<boost::shared_ptr<PolygonWithHoles>> result =
+  PolygonWithHolesPtrVector result =
       CGAL::create_interior_skeleton_and_offset_polygons_with_holes_2(
           max_offset, sorted_pwh);
   if (checkValidOffset(sorted_pwh, result)) {
@@ -61,7 +61,7 @@ void computeOffsetPolygon(const PolygonWithHoles& pwh, FT max_offset,
   const FT kBinarySearchResolution = 0.1;
   while (max - min > kBinarySearchResolution) {
     const FT mid = (min + max) / 2.0;
-    std::vector<boost::shared_ptr<PolygonWithHoles>> temp_result =
+    PolygonWithHolesPtrVector temp_result =
         CGAL::create_interior_skeleton_and_offset_polygons_with_holes_2(
             mid, sorted_pwh);
     if (checkValidOffset(sorted_pwh, temp_result)) {
@@ -164,7 +164,7 @@ bool offsetEdge(const Polygon_2& poly, const size_t& edge_id, double offset,
   std::vector<PolygonWithHoles> diff_list;
   CGAL::difference(polygon, intersection, std::back_inserter(diff_list));
   if (diff_list.size() != 1) {
-    printf("Not exactly one resulting difference polygon. %d", diff_list.size());
+    printf("Not exactly one resulting difference polygon. %ld", diff_list.size());
     return false;
   }
   if (diff_list[0].number_of_holes() > 0) {

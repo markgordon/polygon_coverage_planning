@@ -24,7 +24,7 @@
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Polygon_with_holes_2.h>
 
-typedef CGAL::Exact_predicates_exact_constructions_kernel K;
+typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef K::FT FT;
 typedef K::Point_2 Point_2;
 typedef K::Point_3 Point_3;
@@ -44,6 +44,8 @@ typedef Polygon_2::Vertex_circulator VertexCirculator;
 typedef Polygon_2::Edge_const_iterator EdgeConstIterator;
 typedef Polygon_2::Edge_const_circulator EdgeConstCirculator;
 typedef CGAL::Polygon_with_holes_2<K> PolygonWithHoles;
+typedef boost::shared_ptr<PolygonWithHoles> PolygonWithHolesPtr ;
+typedef std::vector<PolygonWithHolesPtr> PolygonWithHolesPtrVector;
 typedef CGAL::Exact_predicates_inexact_constructions_kernel InexactKernel;
 
 #endif  // POLYGON_COVERAGE_GEOMETRY_CGAL_DEFINITIONS_H_
