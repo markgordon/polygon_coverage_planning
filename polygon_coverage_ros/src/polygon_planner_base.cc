@@ -30,11 +30,8 @@
 
 namespace polygon_coverage_planning {
 
-PolygonPlannerBase::PolygonPlannerBase(const ros::NodeHandle& nh,
-                                       const ros::NodeHandle& nh_private)
-    : nh_(nh),
-      nh_private_(nh_private),
-      wall_distance_(0.0),
+PolygonPlannerBase::PolygonPlannerBase()
+    : wall_distance_(0.0),
       path_cost_function_(
           {std::bind(&computeEuclideanPathCost, std::placeholders::_1),
            CostFunctionType::kDistance}),
@@ -48,7 +45,8 @@ PolygonPlannerBase::PolygonPlannerBase(const ros::NodeHandle& nh,
   // Initial interactions with ROS
   getParametersFromRos();
   advertiseTopics();
-
+  nh_=this;
+  nh_private_=this;
   // Publish RVIZ.
   publishVisualization();
 }

@@ -23,36 +23,6 @@ set(CMAKE_BUILD_TYPE Release)
 find_package(CGAL QUIET COMPONENTS Core)
 include(${CGAL_USE_FILE})
 
-############
-# YAML-CPP #
-############
-# Link against system catkin yaml-cpp if installed.
-find_package(PkgConfig)
-find_package(yaml_cpp_catkin QUIET)
-if(${yaml_cpp_catkin_FOUND})
-    message(STATUS "Found yaml_cpp_catkin, using instead of system library.")
-    set(YamlCpp_LIBRARIES ${yaml_cpp_catkin_LIBRARIES})
-    set(YamlCpp_INCLUDE_DIRS ${yaml_cpp_catkin_INCLUDE_DIRS})
-else()
-    message(STATUS "No yaml_cpp_catkin, using yaml-cpp system library instead.")
-    pkg_check_modules(YamlCpp REQUIRED yaml-cpp>=0.5)
-endif()
-
-# Download test instances.
-include(ExternalProject)
-ExternalProject_Add(
-  pwh_instances
-  URL https://polybox.ethz.ch/index.php/s/7J5HPRR6lM22TnK/download
-  DOWNLOAD_NAME pwh.tar.gz
-  URL_MD5 87b964a974f6a8dd174dfe393b631a61
-  UPDATE_COMMAND ""
-  CONFIGURE_COMMAND ""
-  BUILD_COMMAND ""
-  INSTALL_COMMAND ""
-)
-
-catkin_package()
-include_directories(include ${catkin_INCLUDE_DIRS})
 
 #############
 # LIBRARIES #
@@ -83,20 +53,12 @@ add_executable(coverage_planner_exact_preprocessed
 )
 target_link_libraries(coverage_planner_exact_preprocessed ${PROJECT_NAME} ${catkin_LIBRARIES})
 
-add_executable(shortest_path_planner
-  src/shortest_path_planner_node.cc
-)
-target_link_libraries(shortest_path_planner ${PROJECT_NAME} ${catkin_LIBRARIES})
-
-add_executable(sweep_test
-  test/sweep_test_node.cc
-)
 target_link_libraries(sweep_test ${PROJECT_NAME} ${catkin_LIBRARIES})
 
 ##########
 # EXPORT #
 ##########
-install(TARGETS coverage_planner coverage_planner_exact coverage_planner_exact_preprocessed shortest_path_planner sweep_test
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+install(TARGETS coverage_planner coverage_planner_exact coverage_planner_exact_preprocessed
+ RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

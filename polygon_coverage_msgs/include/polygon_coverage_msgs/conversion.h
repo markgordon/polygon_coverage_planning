@@ -17,21 +17,22 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <ros/ros.h>
+#ifndef POLYGON_COVERAGE_MSGS_CONVERSION_H_
+#define POLYGON_COVERAGE_MSGS_CONVERSION_H_
 
-#include "polygon_coverage_ros/shortest_path_planner.h"
+#include <geometry_msgs/Polygon.h>
+#include <polygon_coverage_geometry/cgal_definitions.h>
+#include <polygon_coverage_msgs/PolygonWithHoles.h>
 
-// Standard C++ entry point
-int main(int argc, char** argv) {
-  // Announce this program to the ROS master
-  ros::init(argc, argv, "shortest_path_planner");
-  // Creating the node handles
-  ros::NodeHandle nh;
-  ros::NodeHandle nh_private("~");
-  // Creating the coverage planner with ros interface
-  polygon_coverage_planning::ShortestPathPlanner shortest_path(nh, nh_private);
-  // Spinning (and processing service calls)
-  ros::spin();
-  // Exit tranquilly
-  return 0;
-}
+namespace polygon_coverage_planning {
+
+void convertPolygonWithHolesToMsg(const PolygonWithHoles& pwh,
+                                  const double altitude,
+                                  polygon_coverage_msgs::PolygonWithHoles* msg);
+
+void convertPolygonToMsg(const Polygon_2& p, const double altitude,
+                         geometry_msgs::Polygon* msg);
+
+}  // namespace polygon_coverage_planning
+
+#endif  // POLYGON_COVERAGE_MSGS_CONVERSION_H_

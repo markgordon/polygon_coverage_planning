@@ -24,10 +24,6 @@
 int main(int argc, char** argv) {
   // Announce this program to the ROS master
   ros::init(argc, argv, "coverage_planner");
-  // Creating the node handles
-  ros::NodeHandle nh;
-  ros::NodeHandle nh_private("~");
-  // Creating the coverage planner with ros interface
   polygon_coverage_planning::CoveragePlanner<
       polygon_coverage_planning::PolygonStripmapPlanner>
       planner(nh, nh_private);
@@ -35,4 +31,10 @@ int main(int argc, char** argv) {
   ros::spin();
   // Exit tranquilly
   return 0;
+    rclcpp::init(argc, argv);
+  rclcpp::spin(
+      std::make_shared<polygon_coverage_planning::CoveragePlanner<
+      polygon_coverage_planning::PolygonStripmapPlanner>
+      planner()); 
+  rclcpp::shutdown();
 }

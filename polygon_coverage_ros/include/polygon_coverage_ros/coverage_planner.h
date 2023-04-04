@@ -61,8 +61,8 @@ template <class Planner>
 class CoveragePlanner : public PolygonPlannerBase {
  public:
   // Constructor
-  CoveragePlanner(const ros::NodeHandle& nh, const ros::NodeHandle& nh_private)
-      : PolygonPlannerBase(nh, nh_private),
+  CoveragePlanner()
+      : PolygonPlannerBase(),
         decomposition_type_(DecompositionType::kBCD),
         sensor_model_type_(SensorModelType::kLine),
         offset_polygons_(true),

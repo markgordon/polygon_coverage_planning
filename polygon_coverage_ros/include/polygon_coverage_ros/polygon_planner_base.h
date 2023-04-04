@@ -31,7 +31,11 @@
 
 #include <geometry_msgs/PointStamped.h>
 #include <polygon_coverage_msgs/PlannerService.h>
-#include <ros/ros.h>
+#include "nav2_costmap_2d/costmap_2d_ros.hpp"
+#include "nav2_msgs/action/navigate_to_pose.hpp"
+#include "nav2_msgs/action/navigate_through_poses.hpp"
+#include "rclcpp_action/rclcpp_action.hpp"
+#include <nav_msgs/msg/path.hpp>
 #include <std_srvs/Empty.h>
 #include <visualization_msgs/MarkerArray.h>
 
@@ -41,8 +45,7 @@ namespace polygon_coverage_planning {
 class PolygonPlannerBase {
  public:
   // Constructor
-  PolygonPlannerBase(const ros::NodeHandle& nh,
-                     const ros::NodeHandle& nh_private);
+  PolygonPlannerBase();
 
  protected:
   // Call to the actual planner.
@@ -56,8 +59,8 @@ class PolygonPlannerBase {
   }
 
   // Node handles
-  ros::NodeHandle nh_;
-  ros::NodeHandle nh_private_;
+  rclcpp::Node nh_;
+  rclcpp::Node nh_private_;
 
   // The solution waypoints for a given start and goal.
   std::vector<Point_2> solution_;
